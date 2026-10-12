@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pariksha Saathi</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0E3B43">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pariksha Saathi">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{--blue:#0E3B43;--blue2:#1F7A6D;--yellow:#F5A623;--bg:#EAF1EF;--ink:#14202E;--mute:#5B6B7C;--green:#1E8E5A;--line:#CBD5E0;--red:#B3261E;--r:10px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;padding-bottom:84px}
+header{padding-top:max(18px,env(safe-area-inset-top))!important;background:var(--blue);color:#fff;padding:18px 16px 22px;border-bottom:6px solid var(--yellow)}
+header h1{margin:0;font-size:1.5rem;letter-spacing:.2px}
+header p{margin:2px 0 0;color:#C9D6EA;font-size:.92rem}
+main{max-width:720px;margin:0 auto;padding:16px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;gap:4px;padding:8px;z-index:5}
+nav button{flex:1;max-width:220px;border:0;background:none;padding:10px 6px;border-radius:var(--r);font:inherit;font-weight:600;color:var(--mute);cursor:pointer}
+nav button.on{background:var(--blue);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.btn{border:0;background:var(--blue);color:#fff;padding:11px 16px;border-radius:var(--r);font:inherit;font-weight:600;cursor:pointer}
+.btn.alt{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn.go{background:var(--yellow);color:var(--ink)}
+.btn.wa{background:#1E8E5A}
+.btn.del{background:#fff;color:var(--red);border:2px solid var(--red)}
+.btn.sm{padding:7px 12px;font-size:.9rem}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r);font:inherit;background:#fff;color:var(--ink)}
+label{display:block;font-weight:600;font-size:.92rem;margin:12px 0 4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.grid2{grid-template-columns:1fr}}
+.ticket{background:#fff;border-radius:var(--r);margin:12px 0;border-left:8px solid var(--blue);box-shadow:0 1px 3px rgba(20,32,46,.12);position:relative}
+.ticket .top{padding:14px 16px 10px}
+.ticket .bot{padding:10px 16px 14px;border-top:2px dashed var(--line);display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.ticket h3{margin:0;font-size:1.1rem}
+.meta{color:var(--mute);font-size:.9rem}
+.chip{display:inline-block;padding:3px 10px;border-radius:99px;background:#FFF3C4;font-size:.85rem;font-weight:700}
+.chip.ok{background:#D5F0E3;color:#145C3B}
+.code{font-family:Consolas,Menlo,monospace;background:var(--ink);color:var(--yellow);padding:3px 9px;border-radius:6px;letter-spacing:2px;font-weight:700}
+.card{background:#fff;border-radius:var(--r);padding:14px 16px;margin:12px 0;box-shadow:0 1px 3px rgba(20,32,46,.12)}
+.card h2{margin:0 0 6px;font-size:1.05rem}
+.track{list-style:none;margin:8px 0 0;padding:0}
+.track li{position:relative;padding:0 0 16px 38px;min-height:34px}
+.track li::before{content:"";position:absolute;left:11px;top:22px;bottom:-2px;width:3px;background:var(--line)}
+.track li:last-child::before{display:none}
+.track li.done::before{background:var(--blue)}
+.track li i{position:absolute;left:0;top:0;width:25px;height:25px;border-radius:50%;background:#fff;border:3px solid var(--line)}
+.track li.done i{background:var(--blue);border-color:var(--blue)}
+.track li.cur i{background:var(--yellow);border-color:var(--ink);box-shadow:0 0 0 5px rgba(242,183,5,.35)}
+.track li b{display:block;line-height:1.3}
+.track li span{color:var(--mute);font-size:.85rem}
+.track li:not(.done) b{color:var(--mute);font-weight:500}
+.log{margin:0;padding:0;list-style:none;font-size:.92rem}
+.log li{padding:6px 0;border-bottom:1px solid #E5EAF0}
+.empty{text-align:center;padding:36px 12px;color:var(--mute)}
+.svc{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.svc label{display:flex;gap:8px;align-items:center;margin:0;font-weight:500}
+.svc input{width:auto}
+.hint{font-size:.85rem;color:var(--mute);margin-top:4px}
+a{color:var(--blue2)}
+@media(prefers-reduced-motion:no-preference){.track li.cur i{animation:p 1.8s ease-in-out infinite}@keyframes p{50%{box-shadow:0 0 0 9px rgba(242,183,5,0)}}}
+</style>
+</head>
+<body>
+<header><h1>Pariksha Saathi</h1><p>Pick-up, stay and printing for exam travellers. Works fully offline.</p></header>
+<main id="app"></main>
+<nav>
+  <button data-v="list" onclick="go('list')">Students</button>
+  <button data-v="add" onclick="go('add')">Add student</button>
+  <button data-v="family" onclick="go('family')">Family view</button>
+</nav>
+
+<script>
+/* ---------- storage (works offline; falls back to memory if the browser blocks storage) ---------- */
+const KEY='pariksha-saathi-v1';
+let mem=null;
+function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return mem?JSON.parse(mem):{students:[]}}
+function save(){const s=JSON.stringify(db);mem=s;try{localStorage.setItem(KEY,s)}catch(e){}}
+let db=load();
+let view='list',cur=null,q='',famCode='';
+
+/* ---------- helpers ---------- */
+const e=x=>String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const fmt=iso=>iso?new Date(iso).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}):'';
+const fmtD=d=>d?new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'';
+const byId=id=>db.students.find(s=>s.id===id);
+const newCode=()=>{const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let o='';for(let i=0;i<6;i++)o+=c[Math.floor(Math.random()*c.length)];return db.students.some(s=>s.code===o)?newCode():o};
+function stages(s){const a=['Booked'];if(s.svc.pickup)a.push('Picked up from '+(s.mode==='train'?'railway station':'bus stand'));if(s.svc.stay)a.push('Settled in room');a.push('Left for exam centre','Reached exam centre','Exam finished');return a}
+function logIt(s,t){s.log.unshift({t:new Date().toISOString(),x:t})}
+const PRINT_STEPS=['Requested','Printed','Handed over'];
+
+/* ---------- navigation ---------- */
+function go(v,id){view=v;if(id!==undefined)cur=id;render();window.scrollTo(0,0)}
+function render(){
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===view||(view==='detail'&&b.dataset.v==='list')));
+  $('app').innerHTML=view==='list'?vList():view==='add'?vAdd():view==='detail'?vDetail():vFamily();
+  if(view==='list')drawCards();
+}
+
+/* ---------- list ---------- */
+function vList(){
+  return `<div class="row"><input id="q" placeholder="Search by name, exam, city or code" value="${e(q)}" oninput="q=this.value;drawCards()" style="flex:1"></div>
+  <div id="cards"></div>
+  <div class="card"><h2>Backup</h2><p class="meta">Data stays on this device. Save a backup file before clearing browser data or changing phones.</p>
+  <div class="row"><button class="btn alt sm" onclick="loadSample()">Add sample students</button>
+  <button class="btn alt sm" onclick="exportData()">Save backup</button>
+  <button class="btn alt sm" onclick="$('imp').click()">Restore backup</button>
+  <input type="file" id="imp" accept=".json" style="display:none" onchange="importData(this)"></div></div>`;
+}
+function drawCards(){
+  const t=q.trim().toLowerCase();
+  const list=db.students.filter(s=>!t||[s.name,s.exam,s.city,s.code,s.centre].join(' ').toLowerCase().includes(t));
+  if(!db.students.length){$('cards').innerHTML=`<div class="empty"><p><b>No students yet.</b></p><p>Add the first student to start tracking their exam journey.</p><div class="row" style="justify-content:center"><button class="btn go" onclick="go('add')">Add student</button><button class="btn alt" onclick="loadSample()">Load sample students</button></div></div>`;return}
+  if(!list.length){$('cards').innerHTML=`<div class="empty">No student matches "${e(q)}".</div>`;return}
+  $('cards').innerHTML=list.map(s=>{const st=stages(s),done=s.stage>=st.length-1;
+    return `<div class="ticket"><div class="top" onclick="go('detail','${s.id}')" style="cursor:pointer">
+      <div class="row" style="justify-content:space-between"><h3>${e(s.name)}</h3><span class="code">${s.code}</span></div>
+      <div class="meta">${e(s.exam)} &bull; ${e(s.city)}${s.examDate?' &bull; '+fmtD(s.examDate):''}</div>
+      <div style="margin-top:8px"><span class="chip ${done?'ok':''}">${e(st[s.stage])}</span></div></div>
+      <div class="bot"><span class="meta">${done?'Journey complete':'Next: '+e(st[s.stage+1])}</span>
+      <span class="row">${done?'':`<button class="btn go sm" onclick="advance('${s.id}')">Mark done</button>`}<button class="btn alt sm" onclick="go('detail','${s.id}')">Open</button></span></div></div>`}).join('');
+}
+
+/* ---------- add ---------- */
+function vAdd(){
+  return `<div class="card"><h2>New student</h2>
+  <label for="f_name">Student name *</label><input id="f_name">
+  <div class="grid2"><div><label for="f_fname">Family contact name</label><input id="f_fname"></div>
+  <div><label for="f_fphone">Family phone *</label><input id="f_fphone" type="tel" inputmode="tel"></div></div>
+  <label for="f_exam">Exam name *</label><input id="f_exam" placeholder="e.g. SSC CGL, NEET, UPSC prelims">
+  <div class="grid2"><div><label for="f_city">Exam city *</label><input id="f_city"></div>
+  <div><label for="f_centre">Exam centre</label><input id="f_centre" placeholder="Name and address"></div></div>
+  <div class="grid2"><div><label for="f_ed">Exam date</label><input id="f_ed" type="date"></div>
+  <div><label for="f_et">Reporting time</label><input id="f_et" type="time"></div></div>
+  <label for="f_mode">Arriving by</label><select id="f_mode"><option value="train">Train</option><option value="bus">Bus</option></select>
+  <div class="grid2"><div><label for="f_place">Arrival station / stand</label><input id="f_place"></div>
+  <div><label for="f_veh">Train / bus number</label><input id="f_veh"></div></div>
+  <label for="f_arr">Arrival date and time</label><input id="f_arr" type="datetime-local">
+  <label>Services</label>
+  <div class="svc"><label><input type="checkbox" id="s_pickup" checked>Pick-up and drop</label><label><input type="checkbox" id="s_stay" checked>Room stay</label><label><input type="checkbox" id="s_print" checked>Printing</label></div>
+  <label for="f_stay">Room / stay address</label><input id="f_stay" placeholder="Add now or later">
+  <label for="f_drv">Driver name, phone and vehicle</label><input id="f_drv" placeholder="Add now or later">
+  <p id="err" class="hint" style="color:var(--red)"></p>
+  <button class="btn go" onclick="saveStudent()">Save student</button></div>`;
+}
+function saveStudent(){
+  const v=id=>$(id).value.trim();
+  if(!v('f_name')||!v('f_fphone')||!v('f_exam')||!v('f_city')){$('err').textContent='Fill in student name, family phone, exam name and exam city.';return}
+  const s={id:'s'+Date.now(),code:newCode(),name:v('f_name'),fname:v('f_fname'),fphone:v('f_fphone'),exam:v('f_exam'),city:v('f_city'),centre:v('f_centre'),examDate:v('f_ed'),examTime:v('f_et'),mode:v('f_mode'),place:v('f_place'),vehicle:v('f_veh'),arrival:v('f_arr'),
+    svc:{pickup:$('s_pickup').checked,stay:$('s_stay').checked,print:$('s_print').checked},stay:v('f_stay'),driver:v('f_drv'),stage:0,times:[new Date().toISOString()],prints:[],log:[]};
+  logIt(s,'Booking created');db.students.unshift(s);save();go('detail',s.id);
+}
+
+/* ---------- journey track ---------- */
+function trackHTML(s){
+  return '<ol class="track">'+stages(s).map((n,i)=>`<li class="${i<=s.stage?'done':''}${i===s.stage?' cur':''}"><i></i><b>${e(n)}</b>${s.times[i]?`<span>${fmt(s.times[i])}</span>`:''}</li>`).join('')+'</ol>';
+}
+function printsHTML(s,edit){
+  if(!s.svc.print)return '';
+  const rows=s.prints.length?'<ul class="log">'+s.prints.map(p=>`<li class="row" style="justify-content:space-between"><span>${e(p.desc)} <span class="meta">(${e(p.pages)} pages)</span><br><span class="chip ${p.step===2?'ok':''}">${PRINT_STEPS[p.step]}</span></span>${edit&&p.step<2?`<button class="btn alt sm" onclick="advPrint('${s.id}','${p.id}')">Mark ${PRINT_STEPS[p.step+1].toLowerCase()}</button>`:''}</li>`).join('')+'</ul>':'<p class="meta">No print requests yet.</p>';
+  return `<div class="card"><h2>Printing</h2>${rows}${edit?`<div class="grid2" style="margin-top:10px"><input id="p_desc" placeholder="What to print (admit card, notes...)"><input id="p_pages" type="number" min="1" placeholder="Pages"></div><button class="btn alt sm" style="margin-top:8px" onclick="addPrint('${s.id}')">Add print request</button>`:''}</div>`;
+}
+
+/* ---------- detail (operator) ---------- */
+function vDetail(){
+  const s=byId(cur);if(!s){return '<div class="empty">Student not found.</div>'}
+  const st=stages(s),done=s.stage>=st.length-1;
+  const svc=[s.svc.pickup&&'Pick-up and drop',s.svc.stay&&'Room stay',s.svc.print&&'Printing'].filter(Boolean).join(', ')||'None';
+  return `<button class="btn alt sm" onclick="go('list')">Back to students</button>
+  <div class="card"><div class="row" style="justify-content:space-between"><h2 style="font-size:1.3rem">${e(s.name)}</h2><span class="code">${s.code}</span></div>
+  <div class="meta">${e(s.exam)} &bull; ${e(s.city)}</div>
+  <p style="margin:8px 0 0"><b>Centre:</b> ${e(s.centre||'Not added')}<br><b>Exam:</b> ${fmtD(s.examDate)||'Date not set'} ${e(s.examTime)}<br>
+  <b>Arrival:</b> ${s.mode==='train'?'Train':'Bus'} ${e(s.vehicle)} at ${e(s.place||'-')}, ${fmt(s.arrival)||'time not set'}<br>
+  <b>Services:</b> ${svc}<br><b>Family:</b> ${e(s.fname||'')} ${e(s.fphone)}</p></div>
+  <div class="card"><h2>Journey</h2>${trackHTML(s)}
+  ${done?'<p><span class="chip ok">Journey complete</span></p>':`<button class="btn go" onclick="advance('${s.id}')">Mark done: ${e(st[s.stage+1])}</button>`}</div>
+  <div class="card"><h2>Stay and pick-up details</h2>
+  <label for="d_stay">Room / stay address</label><input id="d_stay" value="${e(s.stay)}" onchange="setF('${s.id}','stay',this.value,'Stay details updated')">
+  <label for="d_drv">Driver name, phone and vehicle</label><input id="d_drv" value="${e(s.driver)}" onchange="setF('${s.id}','driver',this.value,'Pick-up details updated')"></div>
+  ${printsHTML(s,true)}
+  <div class="card"><h2>Share with family</h2><p class="meta">Sends the current status as a message. Family can also open Family view with code ${s.code}.</p>
+  <div class="row"><button class="btn wa sm" onclick="share('${s.id}','wa')">Send on WhatsApp</button><button class="btn alt sm" onclick="share('${s.id}','copy')">Copy message</button><span id="msg" class="hint"></span></div>
+  <label for="note">Add a note for family</label><div class="row"><input id="note" placeholder="e.g. Driver is waiting at gate 2" style="flex:1"><button class="btn alt sm" onclick="addNote('${s.id}')">Add note</button></div></div>
+  <div class="card"><h2>Updates</h2><ul class="log">${s.log.map(l=>`<li><span class="meta">${fmt(l.t)}</span><br>${e(l.x)}</li>`).join('')}</ul></div>
+  <button class="btn del sm" onclick="delStudent('${s.id}')">Delete student</button>`;
+}
+function advance(id){const s=byId(id),st=stages(s);if(s.stage>=st.length-1)return;s.stage++;s.times[s.stage]=new Date().toISOString();logIt(s,st[s.stage]);save();render()}
+function setF(id,f,v,t){const s=byId(id);s[f]=v.trim();logIt(s,t);save();render()}
+function addNote(id){const v=$('note').value.trim();if(!v)return;logIt(byId(id),v);save();render()}
+function addPrint(id){const d=$('p_desc').value.trim();if(!d)return;const s=byId(id);s.prints.push({id:'p'+Date.now(),desc:d,pages:$('p_pages').value||'1',step:0});logIt(s,'Print requested: '+d);save();render()}
+function advPrint(id,pid){const s=byId(id),p=s.prints.find(x=>x.id===pid);p.step++;logIt(s,PRINT_STEPS[p.step]+': '+p.desc);save();render()}
+function delStudent(id){if(confirm('Delete this student and all their updates?')){db.students=db.students.filter(s=>s.id!==id);save();go('list')}}
+
+/* ---------- share ---------- */
+function message(s){
+  const st=stages(s);
+  return `Update for ${s.name} (${s.exam}, ${s.city})\nStatus: ${st[s.stage]}\n`+(s.svc.stay&&s.stay?`Stay: ${s.stay}\n`:'')+(s.svc.pickup&&s.driver?`Driver: ${s.driver}\n`:'')+(s.centre?`Exam centre: ${s.centre}\n`:'')+(s.prints.length?`Printouts: ${s.prints.map(p=>p.desc+' - '+PRINT_STEPS[p.step]).join('; ')}\n`:'')+(s.log[0]?`Latest: ${s.log[0].x}\n`:'')+`Tracking code: ${s.code}`;
+}
+function share(id,how){
+  const s=byId(id),m=message(s);
+  if(how==='wa'){let n=s.fphone.replace(/\D/g,'');if(n.length===10)n='91'+n;window.open('https://wa.me/'+n+'?text='+encodeURIComponent(m),'_blank');return}
+  const done=()=>{$('msg').textContent='Copied.'};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(m).then(done,()=>fallbackCopy(m,done))}else fallbackCopy(m,done);
+}
+function fallbackCopy(m,done){const t=document.createElement('textarea');t.value=m;document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(x){$('msg').textContent='Could not copy. Select and copy manually.'}t.remove()}
+
+/* ---------- family view (read only) ---------- */
+function vFamily(){
+  const s=db.students.find(x=>x.code===famCode.trim().toUpperCase());
+  let out=`<div class="card"><h2>Track a student</h2><label for="fc">Tracking code</label>
+  <div class="row"><input id="fc" value="${e(famCode)}" maxlength="6" placeholder="6-letter code" style="flex:1;text-transform:uppercase" onkeydown="if(event.key==='Enter')famShow()"><button class="btn go" onclick="famShow()">Show status</button></div></div>`;
+  if(famCode&&!s)out+=`<div class="empty">No student found for code ${e(famCode.toUpperCase())}. Check the code and try again.</div>`;
+  if(s){
+    out+=`<div class="card"><h2 style="font-size:1.3rem">${e(s.name)}</h2><div class="meta">${e(s.exam)} &bull; ${e(s.city)}</div>
+    <p style="margin:8px 0 0"><span class="chip ${s.stage>=stages(s).length-1?'ok':''}">${e(stages(s)[s.stage])}</span></p>
+    <p style="margin:8px 0 0">${s.centre?`<b>Exam centre:</b> ${e(s.centre)}<br>`:''}${s.examDate?`<b>Exam:</b> ${fmtD(s.examDate)} ${e(s.examTime)}<br>`:''}${s.svc.stay&&s.stay?`<b>Stay:</b> ${e(s.stay)}<br>`:''}${s.svc.pickup&&s.driver?`<b>Driver:</b> ${e(s.driver)}`:''}</p></div>
+    <div class="card"><h2>Journey</h2>${trackHTML(s)}</div>${printsHTML(s,false)}
+    <div class="card"><h2>Updates</h2><ul class="log">${s.log.map(l=>`<li><span class="meta">${fmt(l.t)}</span><br>${e(l.x)}</li>`).join('')}</ul></div>`;
+  }
+  return out;
+}
+function famShow(){famCode=$('fc').value;render()}
+
+
+/* ---------- sample data for demos ---------- */
+function loadSample(){
+  const now=Date.now(),H=3600000;
+  const mk=(o,stage)=>{const s=Object.assign({id:'s'+Math.random().toString(36).slice(2),code:newCode(),fname:'',stay:'',driver:'',centre:'',examTime:'',vehicle:'',place:'',arrival:'',prints:[],log:[]},o);s.stage=stage;s.times=[];const n=stages(s);for(let i=0;i<=stage;i++){const t=new Date(now-(stage-i+1)*H).toISOString();s.times[i]=t;s.log.unshift({t,x:i===0?'Booking created':n[i]})}return s};
+  const a=mk({name:'Aarav Sharma',fname:'Rakesh Sharma',fphone:'9810000001',exam:'SSC CGL',city:'Lucknow',centre:'City Montessori School, Kapoorthala',examDate:'2026-11-15',examTime:'09:00',mode:'train',place:'Charbagh Railway Station',vehicle:'12230',arrival:'2026-11-14T06:40',svc:{pickup:true,stay:true,print:true},stay:'Hotel Shanti Residency, Room 204',driver:'Ramesh, 98000 00011, white Dzire',prints:[{id:'p1',desc:'Admit card',pages:'2',step:1},{id:'p2',desc:'Revision notes',pages:'12',step:0}]},2);
+  const b=mk({name:'Priya Verma',fname:'Sunita Verma',fphone:'9810000002',exam:'RRB NTPC',city:'Patna',centre:'Patna Women\'s College',examDate:'2026-11-20',examTime:'08:30',mode:'bus',place:'Mithapur Bus Stand',vehicle:'Bihar Roadways 41',arrival:'2026-11-19T18:30',svc:{pickup:true,stay:true,print:false},stay:'',driver:''},0);
+  const c=mk({name:'Mohit Kumar',fname:'Anil Kumar',fphone:'9810000003',exam:'IBPS PO',city:'Jaipur',centre:'Government College, Malviya Nagar',examDate:'2026-10-04',examTime:'09:30',mode:'train',place:'Jaipur Junction',vehicle:'12958',arrival:'2026-10-03T21:10',svc:{pickup:true,stay:false,print:true},driver:'Kamal, 98000 00022',prints:[{id:'p3',desc:'Admit card',pages:'2',step:2}]},4);
+  db.students=db.students.concat([a,b,c]);save();go('list');
+}
+
+/* ---------- backup ---------- */
+function exportData(){const b=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='pariksha-saathi-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function importData(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.students))throw 0;if(confirm('Replace current data with this backup?')){db=d;save();render()}}catch(x){alert('This file is not a valid backup.')}};r.readAsText(f)}
+
+if(/[?&]demo/.test(location.search)&&!db.students.length){loadSample()}else{render()}
+if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+</script>
+</body>
+</html>
